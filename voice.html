@@ -452,7 +452,7 @@ async function stopRecording() {
 
       // 3. Text → Speech via Puter.js (free, no key needed)
       setVoiceStatus("speaking");
-      const audio = await puter.ai.txt2speech(reply, { language: "es" });
+      const audio = await puter.ai.txt2speech(reply, { provider: 'aws-polly', voice: 'Lupe', engine: 'neural' });
       audio.play();
       audio.onended = () => {
         setVoiceStatus("idle");
