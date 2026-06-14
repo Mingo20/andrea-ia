@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>Andrea IA — DGTech</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0d0d0d;
+  --surface:#1a1a1a;
+  --surface2:#222;
+  --surface3:#2a2a2a;
+  --border:#2e2e2e;
+  --green:#00e676;
+  --green-dim:#00c853;
+  --green-glow:rgba(0,230,118,0.15);
+  --green-glow2:rgba(0,230,118,0.06);
+  --text:#f0f0f0;
+  --text-dim:#888;
+  --text-muted:#444;
+  --white:#fff;
+}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);
+  display:flex;flex-direction:column;height:100dvh;
+}
+
+/* TOPBAR */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;background:var(--surface);
+  border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.avatar-wrap{position:relative;flex-shrink:0}
+.avatar-circle{
+  width:42px;height:42px;border-radius:50%;
+  border:2px solid var(--green);overflow:hidden;
+  background:var(--surface3);
+}
+.avatar-circle img{width:100%;height:100%;object-fit:cover}
+.online-dot{
+  position:absolute;bottom:1px;right:1px;
+  width:11px;height:11px;border-radius:50%;
+  background:var(--green);border:2px solid var(--surface);
+  animation:pdot 2s infinite;
+}
+@keyframes pdot{0%,100%{box-shadow:0 0 0 0 rgba(0,230,118,.5)}50%{box-shadow:0 0 0 4px rgba(0,230,118,0)}}
+.agent-name{font-size:16px;font-weight:700;color:var(--white)}
+.agent-status{font-size:12px;color:var(--green);font-weight:500}
+.topbar-actions{display:flex;gap:8px}
+.icon-btn{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--surface3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;
+}
+.icon-btn:hover{border-color:var(--green)}
+.icon-btn svg{width:18px;height:18px;stroke:var(--text-dim);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* MESSAGES */
+.messages{
+  flex:1;overflow-y:auto;padding:20px 16px;
+  display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth;
+}
+.messages::-webkit-scrollbar{width:0}
+
+/* WELCOME */
+.welcome{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;flex:1;padding:32px 24px;text-align:center;
+}
+.w-avatar{
+  width:110px;height:110px;border-radius:50%;
+  border:3px solid var(--green);overflow:hidden;
+  background:var(--surface3);margin-bottom:24px;
+  box-shadow:0 0 0 10px var(--green-glow2),0 0 50px var(--green-glow);
+  animation:glow 3s infinite;
+}
+@keyframes glow{0%,100%{box-shadow:0 0 0 10px var(--green-glow2),0 0 50px var(--green-glow)}50%{box-shadow:0 0 0 18px rgba(0,230,118,.03),0 0 70px rgba(0,230,118,.2)}}
+.w-avatar img{width:100%;height:100%;object-fit:cover}
+.welcome h1{font-size:26px;font-weight:800;color:var(--white);margin-bottom:8px}
+.welcome h1 span{color:var(--green)}
+.welcome p{font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:28px;max-width:280px}
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:340px}
+.qbtn{
+  display:flex;align-items:center;gap:8px;padding:12px 14px;
+  border-radius:14px;background:var(--surface2);border:1px solid var(--border);
+  cursor:pointer;transition:all .2s;font-size:13px;font-weight:600;color:var(--text);text-align:left;
+}
+.qbtn:hover{border-color:var(--green);color:var(--green);background:var(--green-glow2)}
+.qbtn:active{transform:scale(.97)}
+.qi{
+  width:30px;height:30px;border-radius:8px;background:var(--surface3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.qi svg{width:15px;height:15px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* MESSAGES */
+.msg{display:flex;flex-direction:column;max-width:82%;animation:fu .2s ease}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{align-self:flex-end;align-items:flex-end}
+.msg.agent{align-self:flex-start;align-items:flex-start}
+.bubble{padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.6;word-break:break-word}
+.msg.user .bubble{background:var(--green);color:#000;font-weight:500;border-bottom-right-radius:4px}
+.msg.agent .bubble{background:var(--surface2);color:var(--text);border:1px solid var(--border);border-bottom-left-radius:4px}
+.msg-time{font-size:10px;color:var(--text-muted);margin-top:4px;padding:0 4px}
+
+/* TYPING */
+.typing-wrap{display:flex;align-items:center;gap:5px;padding:14px 18px;background:var(--surface2);border:1px solid var(--border);border-radius:18px;border-bottom-left-radius:4px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);opacity:.4;animation:b .9s infinite}
+.dot:nth-child(2){animation-delay:.15s}
+.dot:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+
+/* INPUT */
+.input-area{padding:12px 16px 20px;background:var(--surface);border-top:1px solid var(--border);flex-shrink:0}
+.input-wrap{display:flex;align-items:flex-end;gap:10px;background:var(--surface3);border:1.5px solid var(--border);border-radius:24px;padding:8px 8px 8px 16px;transition:border-color .2s}
+.input-wrap:focus-within{border-color:var(--green)}
+#userInput{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:14px;resize:none;max-height:120px;font-family:inherit;line-height:1.5;padding:4px 0}
+#userInput::placeholder{color:var(--text-muted)}
+.attach-btn{width:36px;height:36px;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.attach-btn svg{width:20px;height:20px;stroke:var(--text-muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
+.attach-btn:hover svg{stroke:var(--green)}
+.send-btn{width:40px;height:40px;border-radius:50%;background:var(--green);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.send-btn:hover{background:var(--green-dim);transform:scale(1.05)}
+.send-btn:active{transform:scale(.95)}
+.send-btn:disabled{opacity:.4;cursor:default;transform:none}
+.send-btn svg{width:18px;height:18px;fill:none;stroke:#000;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+body.light{
+  --bg:#f4f4f4;--surface:#fff;--surface2:#f0f0f0;--surface3:#e8e8e8;
+  --border:#ddd;--text:#1a1a1a;--text-dim:#666;--text-muted:#bbb;
+  --green:#00a854;--green-dim:#008c44;
+  --green-glow:rgba(0,168,84,.15);--green-glow2:rgba(0,168,84,.06);
+}
+body.light .msg.user .bubble{color:#fff}
+
+@media(min-width:600px){
+  body{max-width:420px;margin:0 auto;border-left:1px solid var(--border);border-right:1px solid var(--border)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="avatar-wrap">
+      <div class="avatar-circle">
+        <img src="https://media.base44.com/images/public/69d2bb91c971dceaa292f823/17e19110b_generated_image.png" alt="Andrea"/>
+      </div>
+      <div class="online-dot"></div>
+    </div>
+    <div>
+      <div class="agent-name">Andrea IA</div>
+      <div class="agent-status">● En línea</div>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button class="icon-btn" onclick="clearChat()" title="Nueva conversación">
+      <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    </button>
+    <button class="icon-btn" onclick="toggleTheme()" title="Cambiar tema">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="messages" id="messages">
+  <div class="welcome" id="welcome">
+    <div class="w-avatar">
+      <img src="https://media.base44.com/images/public/69d2bb91c971dceaa292f823/17e19110b_generated_image.png" alt="Andrea"/>
+    </div>
+    <h1>Hola, soy <span>Andrea</span></h1>
+    <p>Tu asistente inteligente. Puedo ayudarte con planificaciones, documentos, consultas y mucho más.</p>
+    <div class="quick-grid">
+      <button class="qbtn" onclick="quickSend('Ayúdame con una planificación')">
+        <div class="qi"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>Planificación
+      </button>
+      <button class="qbtn" onclick="quickSend('Necesito crear una rúbrica de evaluación')">
+        <div class="qi"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>Rúbrica
+      </button>
+      <button class="qbtn" onclick="quickSend('¿Qué puedes hacer por mí?')">
+        <div class="qi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>¿Qué haces?
+      </button>
+      <button class="qbtn" onclick="quickSend('Redacta un comunicado oficial')">
+        <div class="qi"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>Comunicado
+      </button>
+      <button class="qbtn" onclick="quickSend('Genera un informe de actividades')">
+        <div class="qi"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>Informe
+      </button>
+      <button class="qbtn" onclick="quickSend('Explícame las normas del MINERD')">
+        <div class="qi"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>MINERD
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="input-area">
+  <div class="input-wrap">
+    <textarea id="userInput" placeholder="Escríbele a Andrea..." rows="1" maxlength="2000"></textarea>
+    <button class="attach-btn" title="Adjuntar">
+      <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+    </button>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+const API = "https://api.base44.com/api/apps/69d2bb91c971dceaa292f823/functions/dgtechAgent";
+const CLIENT_ID = new URLSearchParams(location.search).get("client") || "default";
+const ROBOT = "https://media.base44.com/images/public/69d2bb91c971dceaa292f823/17e19110b_generated_image.png";
+let history = [], busy = false;
+
+const input = document.getElementById("userInput");
+input.addEventListener("input", () => { input.style.height="auto"; input.style.height=Math.min(input.scrollHeight,120)+"px"; });
+input.addEventListener("keydown", e => { if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage();} });
+
+const time = () => new Date().toLocaleTimeString("es-DO",{hour:"2-digit",minute:"2-digit"});
+
+function showWelcome(v){ document.getElementById("welcome").style.display = v?"flex":"none"; }
+
+function addMsg(role, text){
+  showWelcome(false);
+  const m = document.getElementById("messages");
+  const d = document.createElement("div");
+  d.className = `msg ${role}`;
+  d.innerHTML = `<div class="bubble">${text.replace(/\n/g,"<br/>")}</div><div class="msg-time">${time()}</div>`;
+  m.appendChild(d);
+  m.scrollTop = m.scrollHeight;
+}
+
+function showTyping(){
+  const m = document.getElementById("messages");
+  const d = document.createElement("div");
+  d.className="msg agent"; d.id="typing";
+  d.innerHTML=`<div class="typing-wrap"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  m.appendChild(d); m.scrollTop=m.scrollHeight;
+}
+function removeTyping(){ const t=document.getElementById("typing"); if(t)t.remove(); }
+
+async function sendMessage(){
+  const text = input.value.trim();
+  if(!text||busy) return;
+  busy=true; input.value=""; input.style.height="auto";
+  document.getElementById("sendBtn").disabled=true;
+  addMsg("user",text); showTyping();
+  history.push({role:"user",content:text});
+  try{
+    const r = await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:text,history:history.slice(-10),clientId:CLIENT_ID})});
+    const d = await r.json();
+    removeTyping();
+    const reply = d.reply || "Lo siento, hubo un error. Intenta de nuevo.";
+    addMsg("agent",reply);
+    history.push({role:"agent",content:reply});
+    if(history.length>40) history=history.slice(-40);
+  }catch(e){
+    removeTyping();
+    addMsg("agent","⚠️ Error de conexión. Verifica tu internet e intenta de nuevo.");
+  }
+  busy=false; document.getElementById("sendBtn").disabled=false; input.focus();
+}
+
+function quickSend(t){ input.value=t; sendMessage(); }
+
+function clearChat(){
+  history=[];
+  location.reload();
+}
+
+function toggleTheme(){ document.body.classList.toggle("light"); }
+</script>
+</body>
+</html>
