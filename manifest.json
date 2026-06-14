@@ -1,0 +1,26 @@
+{
+  "name": "Andrea IA — DGTech",
+  "short_name": "Andrea IA",
+  "description": "Tu asistente inteligente de voz y texto, powered by DGTech",
+  "start_url": "/voice.html",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://media.base44.com/images/public/69d2bb91c971dceaa292f823/17e19110b_generated_image.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://media.base44.com/images/public/69d2bb91c971dceaa292f823/17e19110b_generated_image.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "lang": "es"
+}
